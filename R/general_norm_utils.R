@@ -482,7 +482,7 @@ PlotNormSummary <- function(mSetObj=NA, imgName, format="png", dpi=72, width=NA)
   # since there may be too many compounds, only plot a subsets (50) in box plot
   # but density plot will use all the data
   
-  pre.inx<-GetRandomSubsetIndex(ncol(mSetObj$dataSet$procr), sub.num=50);
+  pre.inx<-GetRandomSubsetIndex(ncol(mSetObj$dataSet$preproc), sub.num=50);
   namesVec <- colnames(mSetObj$dataSet$procr[,pre.inx]);
   
   # only get common ones
@@ -493,7 +493,7 @@ PlotNormSummary <- function(mSetObj=NA, imgName, format="png", dpi=72, width=NA)
   norm.inx<-match(namesVec, colnames(mSetObj$dataSet$norm));
   namesVec <- substr(namesVec, 1, 12); # use abbreviated name
   
-  rangex.pre <- range(mSetObj$dataSet$procr[, pre.inx], na.rm=T);
+  rangex.pre <- range(mSetObj$dataSet$preproc[, pre.inx], na.rm=T);
   rangex.norm <- range(mSetObj$dataSet$norm[, norm.inx], na.rm=T);
   
   x.label<-GetAbundanceLabel(mSetObj$dataSet$type);
@@ -501,13 +501,13 @@ PlotNormSummary <- function(mSetObj=NA, imgName, format="png", dpi=72, width=NA)
   
   # fig 1
   op<-par(mar=c(4,7,4,0), xaxt="s");
-  plot(density(apply(mSetObj$dataSet$procr, 2, mean, na.rm=TRUE)), col='darkblue', las =2, lwd=2, main="", xlab="", ylab="");
+  plot(density(apply(mSetObj$dataSet$preproc, 2, mean, na.rm=TRUE)), col='darkblue', las =2, lwd=2, main="", xlab="", ylab="");
   mtext("Density", 2, 5);
   mtext("Before Normalization",3, 1)
   
   # fig 2
   op<-par(mar=c(7,7,0,0), xaxt="s");
-  boxplot(mSetObj$dataSet$procr[,pre.inx], names= namesVec, ylim=rangex.pre, las = 2, col="lightgreen", horizontal=T);
+  boxplot(mSetObj$dataSet$preproc[,pre.inx], names= namesVec, ylim=rangex.pre, las = 2, col="lightgreen", horizontal=T);
   mtext(x.label, 1, 5);
   
   # fig 3
@@ -561,8 +561,8 @@ PlotSampleNormSummary <- function(mSetObj=NA, imgName, format="png", dpi=72, wid
   # since there may be too many samples, only plot a subsets (50) in box plot
   # but density plot will use all the data
   
-  pre.inx<-GetRandomSubsetIndex(nrow(mSetObj$dataSet$procr), sub.num=50);
-  namesVec <- rownames(mSetObj$dataSet$procr[pre.inx,]);
+  pre.inx<-GetRandomSubsetIndex(nrow(mSetObj$dataSet$preproc), sub.num=50);
+  namesVec <- rownames(mSetObj$dataSet$preproc[pre.inx,]);
   
   # only get common ones
   nm.inx <- namesVec %in% rownames(mSetObj$dataSet$norm)
@@ -572,7 +572,7 @@ PlotSampleNormSummary <- function(mSetObj=NA, imgName, format="png", dpi=72, wid
   norm.inx<-match(namesVec, rownames(mSetObj$dataSet$norm));
   namesVec <- substr(namesVec, 1, 12); # use abbreviated name
   
-  rangex.pre <- range(mSetObj$dataSet$procr[pre.inx,], na.rm=T);
+  rangex.pre <- range(mSetObj$dataSet$preproc[pre.inx,], na.rm=T);
   rangex.norm <- range(mSetObj$dataSet$norm[norm.inx,], na.rm=T);
   
   x.label<-GetAbundanceLabel(mSetObj$dataSet$type);
@@ -580,12 +580,12 @@ PlotSampleNormSummary <- function(mSetObj=NA, imgName, format="png", dpi=72, wid
   
   # fig 1
   op<-par(mar=c(5.75,8,4,0), xaxt="s");
-  boxplot(t(mSetObj$dataSet$procr[pre.inx, ]), names= namesVec, ylim=rangex.pre, las = 2, col="lightgreen", horizontal=T);
+  boxplot(t(mSetObj$dataSet$preproc[pre.inx, ]), names= namesVec, ylim=rangex.pre, las = 2, col="lightgreen", horizontal=T);
   mtext("Before Normalization", 3,1)
   
   # fig 2
   op<-par(mar=c(6.5,7,0,0), xaxt="s");
-  plot(density(apply(mSetObj$dataSet$procr, 1, mean, na.rm=TRUE)), col='darkblue', las =2, lwd=2, main="", xlab="", ylab="");
+  plot(density(apply(mSetObj$dataSet$preproc, 1, mean, na.rm=TRUE)), col='darkblue', las =2, lwd=2, main="", xlab="", ylab="");
   mtext(x.label, 1, 4);
   mtext("Density", 2, 5);
   
